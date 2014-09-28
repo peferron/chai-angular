@@ -22,6 +22,8 @@
   "homepage": "https://github.com/peferron/chai-angular",
   "devDependencies": {
     "chai": "*",
+    "coveralls": "*",
+    "istanbul": "*",
     "mocha": "*"
   },
   "dependencies": {}
