@@ -2,7 +2,7 @@
 
 chai-angular is a collection of small utilities that help testing [Angular](https://angularjs.org/) apps with [Chai](http://chaijs.com/).
 
-The collection is quite modest for now, since it only contains one utility. Hopefully it will remain that small — the more things work out of the box between Angular and Chai, the better!
+Calling it a collection is a strong word, since it only contains one utility. Hopefully it will stay that way — the more things work out of the box between Angular and Chai, the better!
 
 ## resourceEql
 
@@ -51,7 +51,7 @@ $ npm install chai-angular --save-dev
 
 ## Usage with [Karma](http://karma-runner.github.io)
 
-Simply add the path to `chai-angular.js` to the `files` in `karma.conf.js`:
+In `karma.conf.js`, add to `files` the path to `chai-angular.js`:
 
 ```javascript
 module.exports = function(config) {
@@ -66,4 +66,4 @@ module.exports = function(config) {
 };
 ```
 
-Then you can immediately start using chai-angular assertions in your tests.
+You can then immediately start using chai-angular assertions in your tests.
