@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/peferron/chai-angular",
   "devDependencies": {
-    "chai": "^1.9.1",
-    "mocha": "^1.21.4"
+    "chai": "*",
+    "mocha": "*"
   },
   "dependencies": {}
 }
