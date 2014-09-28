@@ -1,6 +1,6 @@
 {
   "name": "chai-angular",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Easier testing of Angular app with Chai.",
   "main": "chai-angular.js",
   "scripts": {
