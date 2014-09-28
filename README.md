@@ -58,7 +58,7 @@ module.exports = function(config) {
     config.set({
         basePath : '../',
         files : [
-            'node_modules/chai_angular/chai-angular.js',
+            'node_modules/chai-angular/chai-angular.js',
             ...
         ],
         ...
