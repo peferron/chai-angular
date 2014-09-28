@@ -4,7 +4,8 @@
   "description": "Easier testing of Angular app with Chai.",
   "main": "chai-angular.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec && open ./coverage/lcov-report/chai-angular/chai-angular.js.html"
   },
   "repository": {
     "type": "git",
