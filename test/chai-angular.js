@@ -42,6 +42,24 @@ describe('chai-angular', function() {
         resource2.a = 2;
     });
 
+    it('should not change the default equal', function() {
+        ({a: 1}).should.not.equal({a: 1});
+        [{a: 1}].should.not.equal([{a: 1}]);
+    });
+
+    it('should not change the default deep equal', function() {
+        ({a: 1}).should.deep.equal({a: 1});
+        ({a: 1}).should.not.deep.equal({a: 2});
+        ({a: 1}).should.not.deep.equal({a: 1, b: 1});
+        ({a: 1, b: 1}).should.not.deep.equal({a: 1});
+        [{a: 1}].should.deep.equal([{a: 1}]);
+        [{a: 1}].should.not.deep.equal([{a: 2}]);
+        [{a: 1}].should.not.deep.equal([{a: 1, b: 1}]);
+        [{a: 1, b: 1}].should.not.deep.equal([{a: 1}]);
+        [{a: 1}, {b: 1}].should.not.deep.equal([{b: 1}, {a: 1}]);
+        [{a: 1}, {b: 1}].should.deep.equal([{a: 1}, {b: 1}]);
+    });
+
     describe('when the object is a plain object', function() {
         it('should not resourceEql a plain object with the same properties', function() {
             assertNotResourceEql(null, null);
