@@ -1,4 +1,4 @@
-# chai-angular [![Build Status](https://drone.io/github.com/peferron/chai-angular/status.png)](https://drone.io/github.com/peferron/chai-angular/latest)
+# chai-angular [![Build Status](https://travis-ci.org/peferron/chai-angular.svg?branch=master)](https://travis-ci.org/peferron/chai-angular) [![Coverage Status](https://coveralls.io/repos/peferron/chai-angular/badge.png?branch=master)](https://coveralls.io/r/peferron/chai-angular?branch=master)
 
 chai-angular is a collection of small utilities that help testing [Angular](https://angularjs.org/) apps with [Chai](http://chaijs.com/).
 
