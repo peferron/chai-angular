@@ -1,4 +1,4 @@
-# chai-angular
+# chai-angular [![Build Status](https://drone.io/github.com/peferron/chai-angular/status.png)](https://drone.io/github.com/peferron/chai-angular/latest)
 
 chai-angular is a collection of small utilities that help testing [Angular](https://angularjs.org/) apps with [Chai](http://chaijs.com/).
 
