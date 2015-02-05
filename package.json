@@ -1,7 +1,7 @@
 {
   "name": "chai-angular",
   "version": "1.0.2",
-  "description": "Easier testing of Angular app with Chai.",
+  "description": "Easier testing of Angular apps with Chai.",
   "main": "chai-angular.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
