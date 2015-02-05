@@ -101,10 +101,12 @@
         /* jshint forin: false */
         var a = [];
         for (var key in obj) {
-            if (ignoreResourceProperties && resourceProperties[key]) {
-                continue;
+            if (obj.hasOwnProperty(key)) {
+                if (ignoreResourceProperties && resourceProperties[key]) {
+                    continue;
+                }
+                a.push(key);
             }
-            a.push(key);
         }
         return a;
     }
