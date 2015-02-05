@@ -9,9 +9,16 @@ chai.should();
 
 var expect = chai.expect;
 
-function Resource() {}
-Resource.prototype.$promise = {};
-Resource.prototype.$resolved = {};
+function Resource() {
+    this.$promise = {};
+    this.$resolved = {};
+}
+Resource.prototype.$get = {};
+Resource.prototype.$save = {};
+Resource.prototype.$query = {};
+Resource.prototype.$remove = {};
+Resource.prototype.$delete = {};
+Resource.prototype.toJSON = {};
 
 function assertResourceEql(a, b) {
     if (a) {
