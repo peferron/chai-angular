@@ -20,14 +20,9 @@
 })(function(chai, _) {
     'use strict';
 
-    var resourceProperties = {
+    var resourceOwnProperties = {
         $promise: true,
-        $resolved: true,
-        $get: true,
-        $save: true,
-        $query: true,
-        $remove: true,
-        $delete: true
+        $resolved: true
     };
 
     chai.Assertion.addChainableMethod('resource', null, function() {
