@@ -74,8 +74,10 @@
 
         var objKeys, expectedKeys;
         try {
-            objKeys = keys(obj, true);
-            expectedKeys = keys(expected);
+            objKeys = Object.keys(obj).filter(function(key) {
+                return !resourceOwnProperties[key];
+            });
+            expectedKeys = Object.keys(expected);
         } catch (e) {
             return false;
         }
@@ -90,19 +92,5 @@
         return objKeys.every(function(key, i) {
             return expectedKeys[i] === key && _.eql(obj[key], expected[key]);
         });
-    }
-
-    function keys(obj, ignoreResourceProperties) {
-        /* jshint forin: false */
-        var a = [];
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (ignoreResourceProperties && resourceProperties[key]) {
-                    continue;
-                }
-                a.push(key);
-            }
-        }
-        return a;
     }
 });
