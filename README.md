@@ -1,4 +1,4 @@
-# chai-angular [![Travis](https://img.shields.io/travis/peferron/chai-angular.svg)](https://travis-ci.org/peferron/chai-angular) [![Coveralls](https://img.shields.io/coveralls/peferron/chai-angular.svg)](https://coveralls.io/r/peferron/chai-angular) [![npm](https://img.shields.io/npm/v/chai-angular.svg)](https://www.npmjs.com/package/chai-angular)
+# chai-angular [![Build Status](https://travis-ci.org/peferron/chai-angular.svg?branch=master)](https://travis-ci.org/peferron/chai-angular) [![Coverage Status](https://coveralls.io/repos/peferron/chai-angular/badge.svg?branch=master)](https://coveralls.io/r/peferron/chai-angular?branch=master) [![npm](https://img.shields.io/npm/v/chai-angular.svg)](https://www.npmjs.com/package/chai-angular)
 
 chai-angular is a collection of small utilities that help testing [Angular](https://angularjs.org/) apps with [Chai](http://chaijs.com/).
 
