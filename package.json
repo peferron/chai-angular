@@ -22,9 +22,13 @@
   },
   "homepage": "https://github.com/peferron/chai-angular",
   "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.5.8",
+    "angular-resource": "^1.5.8",
     "chai": "*",
     "coveralls": "*",
     "istanbul": "*",
+    "jsdom": "^9.4.2",
     "mocha": "*"
   },
   "dependencies": {}

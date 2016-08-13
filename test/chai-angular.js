@@ -1,7 +1,15 @@
- /* jshint globalstrict: true */
- /* global beforeEach: true, describe: true, it: true */
+ /* jshint globalstrict: true, browser: true */
+ /* global beforeEach: false, afterEach: false, describe: false, it: false, angular: false */
 
 'use strict';
+
+global.document = require('jsdom').jsdom();
+global.window = document.defaultView;
+global.navigator = window.navigator = {};
+
+window.mocha = {};
+window.beforeEach = beforeEach;
+window.afterEach = afterEach;
 
 var chai = require('chai');
 chai.use(require('..'));
@@ -9,16 +17,11 @@ chai.should();
 
 var expect = chai.expect;
 
-function Resource() {
-    this.$promise = {};
-    this.$resolved = {};
-}
-Resource.prototype.$get = {};
-Resource.prototype.$save = {};
-Resource.prototype.$query = {};
-Resource.prototype.$remove = {};
-Resource.prototype.$delete = {};
-Resource.prototype.toJSON = {};
+require('angular/angular');
+require('angular-mocks');
+require('angular-resource');
+
+global.angular = window.angular;
 
 function assertResourceEql(a, b) {
     if (a) {
@@ -39,14 +42,41 @@ function assertNotResourceEql(a, b) {
 }
 
 describe('chai-angular', function() {
-    var resource1, resource2;
+    var $httpBackend, $resource;
+    var objEmpty, obj1, obj2, arrEmpty, arr1, arr2;
+
+    beforeEach(angular.mock.module('ngResource'));
+
+    beforeEach(angular.mock.inject(function(_$httpBackend_, _$resource_) {
+        $httpBackend = _$httpBackend_;
+        $resource = _$resource_;
+    }));
 
     beforeEach(function() {
-        resource1 = new Resource();
-        resource1.a = 1;
+        $httpBackend.expectGET('/objEmpty').respond('{}');
+        objEmpty = $resource('/objEmpty').get();
 
-        resource2 = new Resource();
-        resource2.a = 2;
+        $httpBackend.expectGET('/obj1').respond('{"a": 1}');
+        obj1 = $resource('/obj1').get();
+
+        $httpBackend.expectGET('/obj2').respond('{"a": 2}');
+        obj2 = $resource('/obj2').get();
+
+        $httpBackend.expectGET('/arrEmpty').respond('[]');
+        arrEmpty = $resource('/arrEmpty', {}, {get: {isArray: true}}).get();
+
+        $httpBackend.expectGET('/arr1').respond('[1, 2]');
+        arr1 = $resource('/arr1', {}, {get: {isArray: true}}).get();
+
+        $httpBackend.expectGET('/arr2').respond('[{"a": 1}, {"b": 2}]');
+        arr2 = $resource('/arr2', {}, {get: {isArray: true}}).get();
+
+        $httpBackend.flush();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should not change the default equal', function() {
@@ -67,87 +97,59 @@ describe('chai-angular', function() {
         [{a: 1}, {b: 1}].should.deep.equal([{a: 1}, {b: 1}]);
     });
 
-    describe('when the object is a plain object', function() {
-        it('should not resourceEql a plain object with the same properties', function() {
-            assertNotResourceEql(null, null);
-            assertNotResourceEql(null, {});
-            assertNotResourceEql({}, null);
-            assertNotResourceEql({}, {});
-            assertNotResourceEql({a: 1}, {a: 1});
-        });
-
-        it('should not resourceEql a plain object with different properties', function() {
-            assertNotResourceEql({}, {a: 1});
-            assertNotResourceEql({a: 1}, {});
-            assertNotResourceEql({a: 1}, {a: 2});
-            assertNotResourceEql({a: 1}, {b: 1});
-            assertNotResourceEql({a: 1}, {a: 1, b: 1});
-            assertNotResourceEql({a: 1, b: 1}, {a: 1});
-        });
-    });
-
-    describe('when the object is a resource', function() {
+    describe('when the value is an object', function() {
         it('should resourceEql a plain object with the same properties', function() {
-            assertResourceEql(new Resource(), {});
-            assertResourceEql(resource1, {a: 1});
+            assertResourceEql(objEmpty, {});
+            assertResourceEql(obj1, {a: 1});
         });
 
         it('should not resourceEql a plain object with different properties', function() {
-            assertNotResourceEql(new Resource(), null);
-            assertNotResourceEql(new Resource(), {a: 1});
-            assertNotResourceEql(resource1, {});
-            assertNotResourceEql(resource1, {a: 2});
-            assertNotResourceEql(resource1, {b: 1});
-            assertNotResourceEql(resource1, {a: 1, b: 1});
+            assertNotResourceEql(objEmpty, null);
+            assertNotResourceEql(objEmpty, {a: 1});
+            assertNotResourceEql(obj1, {});
+            assertNotResourceEql(obj1, {a: 2});
+            assertNotResourceEql(obj1, {b: 1});
+            assertNotResourceEql(obj1, {a: 1, b: 1});
         });
     });
 
-    describe('when the object is an array of plain objects', function() {
-        it('should not resourceEql an array of plain objects with the same properties', function() {
-            assertNotResourceEql([null], [null]);
-            assertNotResourceEql([null], [{}]);
-            assertNotResourceEql([{}], [null]);
-            assertNotResourceEql([{}], [{}]);
-            assertNotResourceEql([{a: 1}], [{a: 1}]);
+    describe('when the value is an array of plain objects', function() {
+        it('should resourceEql a plain array with the same contents', function() {
+            assertResourceEql(arrEmpty, []);
+            assertResourceEql(arr1, [1, 2]);
+            assertResourceEql(arr2, [{a: 1}, {b: 2}]);
         });
 
-        it('should not resourceEql an array of plain objects with different properties',
-            function() {
-            assertNotResourceEql([{}], [{a: 1}]);
-            assertNotResourceEql([{a: 1}], [{}]);
-            assertNotResourceEql([{a: 1}], [{a: 2}]);
-            assertNotResourceEql([{a: 1}], [{b: 1}]);
-            assertNotResourceEql([{a: 1}], [{a: 1, b: 1}]);
-            assertNotResourceEql([{a: 1, b: 1}], [{a: 1}]);
-            assertNotResourceEql([{a: 1}, {b: 1}], [{a: 1}, {b: 2}]);
-            assertNotResourceEql([{a: 1}, {b: 1}], [{a: 2}, {b: 1}]);
+        it('should not resourceEql a plain array with different contents', function() {
+            assertNotResourceEql(arrEmpty, null);
+            assertNotResourceEql(arrEmpty, [1, 2]);
+            assertNotResourceEql(arr1, []);
+            assertNotResourceEql(arr1, [1]);
+            assertNotResourceEql(arr1, [2, 1]);
+            assertNotResourceEql(arr1, [1, 2, 3]);
+            assertNotResourceEql(arr2, [{a: 1}, {b: 1}]);
+            assertNotResourceEql(arr2, [{b: 2}, {a: 1}]);
         });
     });
 
-    describe('when the object is an array of resources', function() {
-        it('should resourceEql an array of plain objects with the same properties', function() {
-            assertResourceEql([new Resource()], [{}]);
-            assertResourceEql([resource1], [{a: 1}]);
-            assertResourceEql([resource1, resource2], [{a: 1}, {a: 2}]);
+    describe('when the value is a plain array of resources', function() {
+        it('should resourceEql an array with the same contents', function() {
+            assertResourceEql([objEmpty], [{}]);
+            assertResourceEql([arrEmpty], [[]]);
+            assertResourceEql([obj1], [{a: 1}]);
+            assertResourceEql([arr1], [[1, 2]]);
+            assertResourceEql([obj1, obj2], [{a: 1}, {a: 2}]);
+            assertResourceEql([arr1, arr2], [[1, 2], [{a: 1}, {b: 2}]]);
+            assertResourceEql([obj1, arr1], [{a: 1}, [1, 2]]);
         });
 
-        it('should not resourceEql an array of different length', function() {
-            assertNotResourceEql([resource1], [{a: 1}, {}]);
-            assertNotResourceEql([resource1, resource2], [{a: 1}, {a: 2}, {}]);
-        });
-
-        it('should not resourceEql an array of plain objects with different properties',
-            function() {
-            assertNotResourceEql([new Resource()], [null]);
-            assertNotResourceEql([new Resource()], [{a: 1}]);
-            assertNotResourceEql([resource1], [{}]);
-            assertNotResourceEql([resource1], [{a: 2}]);
-            assertNotResourceEql([resource1], [{b: 1}]);
-            assertNotResourceEql([resource1], [{a: 1, b: 1}]);
-            assertNotResourceEql([resource1, resource2], [{a: 1}, {b: 1}]);
-            assertNotResourceEql([resource1, resource2], [{b: 1}, {a: 2}]);
-            assertNotResourceEql([resource1, resource2], [{a: 2}, {a: 1}]);
+        it('should not resourceEql an array with different contents', function() {
+            assertNotResourceEql([obj1], [{a: 1}, {}]);
+            assertNotResourceEql([arr1], [[1, 3]]);
+            assertNotResourceEql([arr2], [[{a: 1}, {b: 1}]]);
+            assertNotResourceEql([obj1, arr1], [{a: 1}, [1, 2], {}]);
+            assertNotResourceEql([obj1, arr1], [{a: 2}, [1, 2]]);
+            assertNotResourceEql([obj1, arr1], [{a: 1}, [2, 3]]);
         });
     });
-
 });

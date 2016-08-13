@@ -1,4 +1,4 @@
-/* global define: true, chai: true */
+/* global define: false, chai: false */
 
 (function (chaiModule) {
     'use strict';
@@ -56,23 +56,28 @@
         if (Array.isArray(obj)) {
             return arrayResourceEql(obj, expected);
         }
-        return objectResourceEql(obj, expected);
+
+        if (typeof obj === 'object') {
+            return objectResourceEql(obj, expected);
+        }
+
+        return _.eql(obj, expected);
     }
 
     function arrayResourceEql(obj, expected) {
-        return Array.isArray(expected) &&
-            obj.length === expected.length &&
+        return Array.isArray(expected) && obj.length === expected.length &&
             obj.every(function(item, i) {
                 return resourceEql(item, expected[i]);
             });
     }
 
     function objectResourceEql(obj, expected) {
-        if (!obj || !obj.constructor || obj.constructor.name !== 'Resource' || !expected) {
+        if (!obj || !expected) {
             return false;
         }
 
         var objKeys, expectedKeys;
+
         try {
             objKeys = Object.keys(obj).filter(function(key) {
                 return !resourceOwnProperties[key];
@@ -82,15 +87,8 @@
             return false;
         }
 
-        if (objKeys.length !== expectedKeys.length) {
-            return false;
-        }
-
-        objKeys.sort();
-        expectedKeys.sort();
-
-        return objKeys.every(function(key, i) {
-            return expectedKeys[i] === key && _.eql(obj[key], expected[key]);
+        return objKeys.length === expectedKeys.length && objKeys.every(function(key) {
+            return _.eql(obj[key], expected[key]);
         });
     }
 });
