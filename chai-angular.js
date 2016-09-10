@@ -40,6 +40,17 @@
 
     chai.Assertion.addMethod('resourceEql', assertResourceEql);
 
+    // TDD style asserts
+    var assert = chai.assert;
+
+    assert.resourceEqual = function (val, exp, msg) {
+        new chai.Assertion(val, msg).to.deep.resource.equal(exp);
+    };
+
+    assert.notResourceEqual = function (val, exp, msg) {
+        new chai.Assertion(val, msg).to.not.deep.resource.equal(exp);
+    };
+
     function assertResourceEql(expected) {
         /* jshint validthis: true */
         var obj = this._obj;

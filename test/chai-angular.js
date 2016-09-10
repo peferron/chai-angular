@@ -16,6 +16,7 @@ chai.use(require('..'));
 chai.should();
 
 var expect = chai.expect;
+var assert = chai.assert;
 
 require('angular/angular');
 require('angular-mocks');
@@ -30,6 +31,8 @@ function assertResourceEql(a, b) {
     }
     expect(a).to.resourceEql(b);
     expect(a).to.deep.resource.equal(b);
+
+    assert.resourceEqual(a, b);
 }
 
 function assertNotResourceEql(a, b) {
@@ -39,6 +42,8 @@ function assertNotResourceEql(a, b) {
     }
     expect(a).to.not.resourceEql(b);
     expect(a).to.not.deep.resource.equal(b);
+
+    assert.notResourceEqual(a, b);
 }
 
 describe('chai-angular', function() {
