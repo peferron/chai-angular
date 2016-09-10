@@ -44,7 +44,7 @@ expect($scope.user).to.deep.resource.equal({id: '9', name: 'Roger Zelazny'});
 expect($scope.user).to.resourceEql({id: '9', name: 'Roger Zelazny'});
 
 assert.resourceEqual($scope.user, {id: '9', name: 'Roger Zelazny'});
-assert.resourceNotEqual($scope.user, {id: '10', name: 'Philip K. Dick'});
+assert.notResourceEqual($scope.user, {id: '10', name: 'Philip K. Dick'});
 ```
 
 ## Installation
