@@ -43,7 +43,7 @@ function assertNotResourceEql(a, b) {
     expect(a).to.not.resourceEql(b);
     expect(a).to.not.deep.resource.equal(b);
 
-    assert.resourceNotEqual(a, b);
+    assert.notResourceEqual(a, b);
 }
 
 describe('chai-angular', function() {

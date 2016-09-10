@@ -17,7 +17,7 @@
         }
         chai.use(chaiModule);
     }
-})(function (chai, _) {
+})(function(chai, _) {
     'use strict';
 
     var resourceOwnProperties = {
@@ -25,12 +25,12 @@
         $resolved: true
     };
 
-    chai.Assertion.addChainableMethod('resource', null, function () {
+    chai.Assertion.addChainableMethod('resource', null, function() {
         _.flag(this, 'resource', true);
     });
 
     chai.Assertion.overwriteMethod('equal', function (_super) {
-        return function () {
+        return function() {
             if (_.flag(this, 'resource') && _.flag(this, 'deep')) {
                 return assertResourceEql.apply(this, arguments);
             }
@@ -47,7 +47,7 @@
         new chai.Assertion(val, msg).to.deep.resource.equal(exp);
     };
 
-    assert.resourceNotEqual = function (val, exp, msg) {
+    assert.notResourceEqual = function (val, exp, msg) {
         new chai.Assertion(val, msg).to.not.deep.resource.equal(exp);
     };
 
@@ -77,7 +77,7 @@
 
     function arrayResourceEql(obj, expected) {
         return Array.isArray(expected) && obj.length === expected.length &&
-            obj.every(function (item, i) {
+            obj.every(function(item, i) {
                 return resourceEql(item, expected[i]);
             });
     }
@@ -90,7 +90,7 @@
         var objKeys, expectedKeys;
 
         try {
-            objKeys = Object.keys(obj).filter(function (key) {
+            objKeys = Object.keys(obj).filter(function(key) {
                 return !resourceOwnProperties[key];
             });
             expectedKeys = Object.keys(expected);
@@ -98,8 +98,8 @@
             return false;
         }
 
-        return objKeys.length === expectedKeys.length && objKeys.every(function (key) {
-                return _.eql(obj[key], expected[key]);
-            });
+        return objKeys.length === expectedKeys.length && objKeys.every(function(key) {
+            return _.eql(obj[key], expected[key]);
+        });
     }
 });
